@@ -40,7 +40,7 @@ gen-client:
  	    --clientset-name versioned \
 	     --input apis/v1 )
 
-# Lister and informers - depend on client.
+# Lister and informers - depend on client. Lister depends on informer indirectly, via store interface
 gen-cachedclient:
 	(cd echo && lister-gen \
           --input-dirs "${PKG_BASE}/echo/apis/v1" \
@@ -48,7 +48,7 @@ gen-cachedclient:
           --output-package "${PKG_BASE}/cachedclient/echo/lister" )
 	(cd echo && informer-gen \
           --input-dirs "${PKG_BASE}/echo/apis/v1" \
-		  --versioned-clientset-package "${PKG_BASE}/client/echo" \
+		  --versioned-clientset-package "${PKG_BASE}/client/echo/versioned" \
   		  --listers-package "${PKG_BASE}/cachedclient/echo/lister" \
       	  --go-header-file ${BASE}/tools/boilerplate/boilerplate.generatego.txt \
           --output-package "${PKG_BASE}/cachedclient/echo/informer" )
